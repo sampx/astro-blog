@@ -1,0 +1,46 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { frontmatter } = Astro.props;
+const hasImg = frontmatter.image && frontmatter.image.url && frontmatter.image.url.trim() !== ''
+---
+
+<BaseLayout pageTitle={frontmatter.title}>
+  <p>发表于：{frontmatter.pubDate.toString().slice(0, 10)}</p>
+  <p><em>{frontmatter.description}</em></p>
+  <p>作者: {frontmatter.author}</p>
+  { hasImg && <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt || 'Image' } /> }
+  <div class="tags">
+    {
+      frontmatter.tags.map((tag) => (
+        <p class="tag">
+          <a href={`/tags/${tag}`}>{tag}</a>
+        </p>
+      ))
+    }
+  </div>
+  <slot />
+</BaseLayout>
+<style>
+  a {
+    color: #0099cc; /* 绿蓝色 */
+    text-decoration: none; /* 去除默认下划线 */
+  }
+  a:hover {
+    color: #ffcc00; /* 鼠标移上去时显示高亮 */
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    margin: 0.25em;
+    border: dotted 1px #a1a1a1;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+    font-size: 1.15em;
+    background-color: #f8fcfd;
+  }
+</style>

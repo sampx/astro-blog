@@ -1,16 +1,16 @@
 site:
   name: uDock
-  site: 'https://blog.udock.cn'
-  base: '/' # Change this if you need to deploy to Github Pages, for example
+  site: "https://blog.udock.cn"
+  base: "/" # Change this if you need to deploy to Github Pages, for example
   trailingSlash: false # Generate permalinks with or without "/" at the end
 
-  googleSiteVerificationId: 'muKclfq3kj_5qX-OpG2Eo-KiSMT_K6-i8IJwPVnbarI'
+  googleSiteVerificationId: "muKclfq3kj_5qX-OpG2Eo-KiSMT_K6-i8IJwPVnbarI"
 
 # Default SEO metadata
 metadata:
   title:
     default: uDock
-    template: '%s — uDock'
+    template: "%s — uDock"
   description: "\U0001F4DA uDock is my personal blog dedicated to sharing technical insights and tools on programming, entrepreneurship abroad, and artificial intelligence, aiming to provide practical knowledge and inspiration for readers."
   robots:
     index: true
@@ -39,28 +39,28 @@ apps:
     post:
       isEnabled: true
       # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
-      permalink: '/%slug%'
+      permalink: "/%slug%"
       robots:
         index: true
 
     list:
       isEnabled: true
       # Blog main path, you can change this to "articles" (/articles)
-      pathname: 'blog'
+      pathname: "blog"
       robots:
         index: true
 
     category:
       isEnabled: true
       # Category main path /category/some-category, you can change this to "group" (/group/some-category)
-      pathname: 'category'
+      pathname: "category"
       robots:
         index: true
 
     tag:
       isEnabled: true
       # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
-      pathname: 'tag'
+      pathname: "tag"
       robots:
         index: false
 
@@ -74,4 +74,4 @@ analytics:
 
 ui:
   # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
-  theme: 'system'
+  theme: "system"

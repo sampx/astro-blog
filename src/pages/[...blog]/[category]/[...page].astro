@@ -32,8 +32,8 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-7xl">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+  <section class="px-4 sm:px-6 py-8 sm:py-12 lg:py-16 mx-auto max-w-7xl">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
       <Sidebar>
         <PostTags 
           tags={allCategories.map(cat => ({ slug: cat.slug, title: `${cat.title} (${cat.count})` }))} 

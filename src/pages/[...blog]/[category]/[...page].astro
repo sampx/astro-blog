@@ -1,11 +1,12 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
-import { blogCategoryRobots, getStaticPathsBlogCategory } from '~/utils/blog';
+import { blogCategoryRobots, getStaticPathsBlogCategory, findCategories, findTags } from '~/utils/blog';
 
 import Layout from '~/layouts/PageLayout.astro';
 import BlogList from '~/components/blog/List.astro';
-import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
+import PostTags from "~/components/blog/Tags.astro";
+import Sidebar from '~/components/blog/Sidebar.astro';
 
 export const prerender = true;
 
@@ -16,8 +17,10 @@ export const getStaticPaths = (async ({ paginate }) => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths> & { category: Record<string, string> };
 
 const { page, category } = Astro.props as Props;
-
 const currentPage = page.currentPage ?? 1;
+
+const allCategories = await findCategories();
+const allTags = await findTags();
 
 const metadata = {
   title: `Category '${category.title}' ${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
@@ -29,9 +32,29 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <section class="px-4 md:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline>{category.title}</Headline>
-    <BlogList posts={page.data} />
-    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+  <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-7xl">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <Sidebar>
+        <PostTags 
+          tags={allCategories.map(cat => ({ slug: cat.slug, title: `${cat.title} (${cat.count})` }))} 
+          class="mb-2" 
+          title="Categories" 
+          isCategory={true} 
+        />
+        <PostTags 
+          tags={allTags.map(tag => ({ slug: tag.slug, title: `${tag.title} (${tag.count})` }))} 
+          title="Tags" 
+        />
+      </Sidebar>
+      
+      {/* 右侧内容区 */}
+      <main class="md:col-span-9">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+          <h1 class="text-2xl font-bold mb-6">Category: {category.title}</h1>
+          <BlogList posts={page.data} />
+          <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+        </div>
+      </main>
+    </div>
   </section>
 </Layout>

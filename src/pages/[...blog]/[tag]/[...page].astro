@@ -1,11 +1,11 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
-import { blogTagRobots, getStaticPathsBlogTag } from '~/utils/blog';
+import { blogTagRobots, getStaticPathsBlogTag, findCategories, findTags } from '~/utils/blog';
 
 import Layout from '~/layouts/PageLayout.astro';
 import BlogList from '~/components/blog/List.astro';
-import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
+import Sidebar from '~/components/blog/Sidebar.astro';
 
 export const prerender = true;
 
@@ -16,8 +16,10 @@ export const getStaticPaths = (async ({ paginate }) => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page, tag } = Astro.props as Props;
-
 const currentPage = page.currentPage ?? 1;
+
+const allCategories = await findCategories();
+const allTags = await findTags();
 
 const metadata = {
   title: `Posts by tag '${tag.title}'${currentPage > 1 ? ` — Page ${currentPage} ` : ''}`,
@@ -29,9 +31,21 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <section class="px-4 md:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline>Tag: {tag.title}</Headline>
-    <BlogList posts={page.data} />
-    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+  <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-7xl">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <Sidebar 
+        categories={allCategories.map(cat => ({ slug: cat.slug, title: `${cat.title} (${cat.count})` }))}
+        tags={allTags.map(tag => ({ slug: tag.slug, title: `${tag.title} (${tag.count})` }))}
+      />
+      
+      {/* 右侧内容区 */}
+      <main class="md:col-span-9">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+          <h1 class="text-2xl font-bold mb-6">Tag: {tag.title}</h1>
+          <BlogList posts={page.data} />
+          <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+        </div>
+      </main>
+    </div>
   </section>
 </Layout>

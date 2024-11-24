@@ -1,0 +1,13 @@
+---
+import PostTags from "./Tags.astro";
+import { findTags } from '~/utils/blog';
+
+const allTags = await findTags();
+---
+
+<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+  <PostTags 
+    tags={allTags.map(tag => ({ slug: tag.slug, title: `${tag.title} (${tag.count})` }))} 
+    title="Tags" 
+  />
+</div>

@@ -39,14 +39,14 @@ apps:
     post:
       isEnabled: true
       # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
-      permalink: "/%slug%"
+      permalink: "/blogs/%slug%"
       robots:
         index: true
 
     list:
       isEnabled: true
       # Blog main path, you can change this to "articles" (/articles)
-      pathname: "blog"
+      pathname: "blogs"
       robots:
         index: true
 

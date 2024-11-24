@@ -1,0 +1,15 @@
+---
+import PostTags from "./Tags.astro";
+import { findCategories } from '~/utils/blog';
+
+const allCategories = await findCategories();
+---
+
+<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+  <PostTags 
+    tags={allCategories.map(cat => ({ slug: cat.slug, title: `${cat.title} (${cat.count})` }))} 
+    class="mb-2" 
+    title="Categories" 
+    isCategory={true} 
+  />
+</div>

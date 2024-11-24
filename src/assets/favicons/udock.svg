@@ -1,0 +1,11 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!--连接点装饰-->
+  <!--U形状 - 左半部分-->  
+  <path stroke-width="12" fill="none" stroke="#2563eb" stroke-linecap="round" transform="matrix(1,0,0,1,-1.4,0.7)" d="M 31.2 46.6 L 31.2 66.2 Q 31.2 73.6 54.7 73.6"/>
+  <!--D形状 - 右半部分-->
+  
+  <path stroke-width="12" fill="none" stroke="#2563eb" stroke-linecap="round" transform="matrix(1,0,0,1,0,0)" d="M 61 30 L 61 84.4 Q 92.7 84.4 92.7 57.1 Q 92.7 30 61 30"/>
+  <ellipse rx="5.6" ry="5.8" cx="30.3" cy="33" fill="#60a5fa"/>
+  <ellipse rx="5.9" ry="5.7" fill="#60a5fa" cx="60.6" cy="74.1"/>
+  
+</svg>

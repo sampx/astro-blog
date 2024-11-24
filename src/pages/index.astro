@@ -1,10 +1,143 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Greeting from '../components/Greeting';
-const pageTitle = "UDock";
+import Layout from "~/layouts/PageLayout.astro";
+
+import Hero from "~/components/widgets/Hero.astro";
+import Note from "~/components/widgets/Note.astro";
+import Features from "~/components/widgets/Features.astro";
+import FAQs from "~/components/widgets/FAQs.astro";
+import CallToAction from "~/components/widgets/CallToAction.astro";
+
+const metadata = {
+  title:
+    "uDock — Sharing technical insights and tools on programming, entrepreneurship abroad, and artificial intelligence.",
+  ignoreTitleTemplate: true,
+};
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-  <h2>My awesome blog subtitle</h2>
-  <Greeting client:load messages={["Hi", "Hello", "Howdy", "Hey there"]} />
-</BaseLayout>
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+
+  <Hero
+    actions={[
+      {
+        variant: "primary",
+        text: "代码库",
+        href: "https://github.com/sampx/auto-login",
+        target: "_blank",
+        icon: "tabler:brand-github",
+      },
+      { text: "功能", href: "#features" },
+    ]}
+    image={
+      {
+        src: "~/assets/images/hero-image.png",
+        alt: "uDock Hero Image",
+      }
+    }
+  >
+    
+    <Fragment slot="title">
+      <span>登录自动化工具</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      自动按照预定计划登录指定网站，并发送有关登录状态的电子邮件通知。
+      <br />
+      Docker一键部署，支持多账号，支持多网站，支持多种登录方式，支持多种通知方式。
+    </Fragment>
+    <!-- <Fragment slot="content">
+      <span>详细介绍</span>
+    </Fragment> -->
+  </Hero>
+
+  <!-- Note Widget ******************* -->
+
+  <Note icon="tabler:info-square" title="提示" notes="最简单的往往是更好的!" />
+
+  <!-- Features Widget *************** -->
+
+  <Features
+    id="features"
+    columns={2}
+    tagline=""
+    title="功能特性"
+    subtitle="简单明了，易于使用"
+    items={[
+      {
+        title: "自动化登录",
+        description: "按照预定计划自动登录指定网站，无需人工干预。",
+        icon: "tabler:robot",
+      },
+      {
+        title: "多账号支持",
+        description: "支持多个账号同时登录，满足不同需求。",
+        icon: "tabler:users",
+      },
+      {
+        title: "多网站支持",
+        description: "支持多个网站的自动登录，灵活应对不同场景。",
+        icon: "tabler:world",
+      },
+      {
+        title: "多种登录方式",
+        description: "支持多种登录方式，包括用户名密码、API密钥等。",
+        icon: "tabler:lock",
+      },
+      {
+        title: "多种通知方式",
+        description: "支持多种通知方式，包括邮件、短信、Slack等。",
+        icon: "tabler:bell",
+      },
+      {
+        title: "Docker一键部署",
+        description: "通过Docker一键部署，简化安装和配置过程。",
+        icon: "tabler:box",
+      },
+    ]}
+  />
+
+  <!-- Content Widget **************** -->
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title="常见问题"
+    subtitle=""
+    items={[
+      {
+        title: "uDock支持哪些网站的自动登录？",
+        description:
+          "uDock支持大多数主流网站的自动登录，包括但不限于Google、Facebook、Twitter等。",
+      },
+      {
+        title: "如何配置通知方式？",
+        description:
+          "你可以在配置文件中设置通知方式，支持邮件、短信、Slack等多种方式。",
+      },
+      {
+        title: "uDock是否支持多账号登录？",
+        description: "是的，uDock支持多个账号同时登录，满足不同需求。",
+      },
+      {
+        title: "如何安装Docker？",
+        description:
+          "你可以访问Docker官方网站，根据你的操作系统下载并安装Docker。",
+      },
+    ]}
+  />
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    title="加入uDock社区"
+    subtitle="与我们一起探索技术与创业的无限可能"
+    actions={[
+      {
+        text: "加入我们",
+        href: "https://discord.gg/udock",
+        target: "_blank",
+        icon: "tabler:brand-discord",
+      }
+    ]}
+  />
+</Layout>

@@ -1,0 +1,77 @@
+site:
+  name: uDock
+  site: "https://blog.udock.cn"
+  base: "/" # Change this if you need to deploy to Github Pages, for example
+  trailingSlash: false # Generate permalinks with or without "/" at the end
+
+  googleSiteVerificationId: "muKclfq3kj_5qX-OpG2Eo-KiSMT_K6-i8IJwPVnbarI"
+
+# Default SEO metadata
+metadata:
+  title:
+    default: uDock
+    template: "%s — uDock"
+  description: "\U0001F4DA uDock is my personal blog dedicated to sharing technical insights and tools on programming, entrepreneurship abroad, and artificial intelligence, aiming to provide practical knowledge and inspiration for readers."
+  robots:
+    index: true
+    follow: true
+  openGraph:
+    site_name: uDock
+    # images:
+    #   - url: '~/assets/images/default.png'
+    #     width: 1200
+    #     height: 628
+    type: website
+  # twitter:
+  #   handle: '@onwidget'
+  #   site: '@onwidget'
+  #   cardType: summary_large_image
+
+i18n:
+  language: zh-cn
+  textDirection: ltr
+
+apps:
+  blog:
+    isEnabled: true
+    postsPerPage: 4
+
+    post:
+      isEnabled: true
+      # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      permalink: "/blogs/%slug%"
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      # Blog main path, you can change this to "articles" (/articles)
+      pathname: "blogs"
+      robots:
+        index: true
+
+    category:
+      isEnabled: true
+      # Category main path /category/some-category, you can change this to "group" (/group/some-category)
+      pathname: "category"
+      robots:
+        index: true
+
+    tag:
+      isEnabled: true
+      # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
+      pathname: "tag"
+      robots:
+        index: false
+
+    isRelatedPostsEnabled: true
+    relatedPostsCount: 4
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null # or "G-XXXXXXXXXX"
+
+ui:
+  # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: "system"

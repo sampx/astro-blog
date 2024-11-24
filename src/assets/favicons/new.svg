@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <!-- 主体方框 -->
+  <rect x="120" y="120" width="160" height="160" fill="none" stroke="#0ea5e9" stroke-width="8" rx="20"/>
+  
+  <!-- U字符 -->
+  <path d="M 155 159 L 155 228.8 Q 155 252 201.2 252 Q 247 252 247 228.8 L 247 159" 
+        fill="none" 
+        stroke="#2563eb" 
+        stroke-width="16" 
+        stroke-linecap="round"/>
+  
+  <!-- D字符 - 被U字符包围 -->
+  <path d="M 184 141 L 184 227 Q 225 227 225 185.9 Q 225 141 184 141" 
+        fill="none" 
+        stroke="#2563eb" 
+        stroke-width="14" 
+        stroke-linecap="round"/>
+  <!--电路装饰 - 左侧-->
+  <circle fill="#0ea5e9" cx="80" cy="200" r="10"/>
+  
+  <circle fill="#60a5fa" cx="40" cy="160" r="8"/>
+  <circle cx="40" cy="240" r="8" fill="#60a5fa"/>
+  <path stroke-width="4" stroke="#0ea5e9" d="M 80 200 H 110"/>
+  <path stroke-width="4" stroke="#60a5fa" d="M 40 160 H 110"/>
+  <path d="M 40 240 H 110" stroke="#60a5fa" stroke-width="4"/>
+  <!--电路装饰 - 右侧-->
+  <circle fill="#0ea5e9" cx="320" cy="200" r="10"/>
+  
+  <circle fill="#60a5fa" cx="360" cy="160" r="8"/>
+  <circle cx="360" cy="240" r="8" fill="#60a5fa"/>
+  <path stroke-width="4" stroke="#0ea5e9" d="M 290 200 H 320"/>
+  <path stroke-width="4" stroke="#60a5fa" d="M 290 160 H 360"/>
+  <path d="M 290 240 H 360" stroke="#60a5fa" stroke-width="4"/>
+  <!--电路装饰 - 上方-->
+  <circle fill="#0ea5e9" cx="200" cy="80" r="10"/>
+  
+  <circle fill="#60a5fa" cx="160" cy="40" r="8"/>
+  <circle cx="240" cy="40" r="8" fill="#60a5fa"/>
+  <path stroke-width="4" stroke="#0ea5e9" d="M 200 80 V 110"/>
+  <path stroke-width="4" stroke="#60a5fa" d="M 160 40 V 110"/>
+  <path d="M 240 40 V 110" stroke="#60a5fa" stroke-width="4"/>
+  <!--电路装饰 - 下方-->
+  <circle fill="#0ea5e9" cx="200" cy="320" r="10"/>
+  
+  <circle fill="#60a5fa" cx="160" cy="360" r="8"/>
+  <circle cx="240" cy="360" r="8" fill="#60a5fa"/>
+  <path stroke-width="4" stroke="#0ea5e9" d="M 200 290 V 320"/>
+  <path stroke-width="4" stroke="#60a5fa" d="M 160 290 V 360"/>
+  <path d="M 240 290 V 360" stroke="#60a5fa" stroke-width="4"/>
+  <!--内部电路点-->
+  <!--添加发光效果-->
+  
+  <circle stroke-width="9" opacity="0.1" fill="none" stroke="#0ea5e9" cx="200" cy="200" r="140"/>
+  <circle stroke-width="18" opacity="0.1" fill="none" stroke="#0ea5e9" cx="200" cy="200" r="130"/>
+</svg>

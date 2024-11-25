@@ -16,6 +16,20 @@ export default function AuthButtonsClient({ initialAuth, initialUsername }: Prop
     setLoginHref(`/login/github?redirect=${encodeURIComponent(currentPath)}`);
   }, []);
 
+  const handleLogin = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const width = 600;
+    const height = 700;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+    
+    window.open(
+      loginHref,
+      "Login with GitHub",
+      `width=${width},height=${height},left=${left},top=${top},popup=1,toolbar=0`
+    );
+  };
+
   const checkAuthStatus = async () => {
     try {
       const response = await fetch("/api/auth/status");
@@ -102,6 +116,7 @@ export default function AuthButtonsClient({ initialAuth, initialUsername }: Prop
       ) : (
         <a
           href={loginHref}
+          onClick={handleLogin}
           className="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4"
         >
           Login

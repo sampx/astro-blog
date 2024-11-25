@@ -68,10 +68,27 @@ export async function GET(context: APIContext): Promise<Response> {
       const sessionToken = generateSessionToken();
       const session = createSession(sessionToken, existingUser.id);
       setSessionTokenCookie(context, sessionToken, session.expiresAt);
-      return new Response(null, {
-        status: 302,
+      
+      // 返回一个HTML页面，该页面会关闭自己并刷新父窗口
+      return new Response(`
+        <!DOCTYPE html>
+        <html>
+          <head><title>登录成功</title></head>
+          <body>
+            <script>
+              if (window.opener) {
+                window.opener.location.href = "${storedRedirect}";
+                window.close();
+              } else {
+                window.location.href = "${storedRedirect}";
+              }
+            </script>
+          </body>
+        </html>
+      `, {
+        status: 200,
         headers: {
-          Location: storedRedirect,
+          "Content-Type": "text/html",
         },
       });
     }
@@ -104,10 +121,26 @@ export async function GET(context: APIContext): Promise<Response> {
     const session = createSession(sessionToken, user.id);
     setSessionTokenCookie(context, sessionToken, session.expiresAt);
 
-    return new Response(null, {
-      status: 302,
+    // 返回一个HTML页面，该页面会关闭自己并刷新父窗口
+    return new Response(`
+      <!DOCTYPE html>
+      <html>
+        <head><title>登录成功</title></head>
+        <body>
+          <script>
+            if (window.opener) {
+              window.opener.location.href = "${storedRedirect}";
+              window.close();
+            } else {
+              window.location.href = "${storedRedirect}";
+            }
+          </script>
+        </body>
+      </html>
+    `, {
+      status: 200,
       headers: {
-        Location: storedRedirect,
+        "Content-Type": "text/html",
       },
     });
   } catch (error) {

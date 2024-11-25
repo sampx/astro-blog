@@ -8,6 +8,13 @@ interface Props {
 export default function AuthButtonsClient({ initialAuth, initialUsername }: Props) {
   const [isLoggedIn, setIsLoggedIn] = useState(initialAuth);
   const [username, setUsername] = useState(initialUsername);
+  const [loginHref, setLoginHref] = useState("/login/github");
+
+  useEffect(() => {
+    // 在客户端更新登录链接
+    const currentPath = window.location.pathname + window.location.search;
+    setLoginHref(`/login/github?redirect=${encodeURIComponent(currentPath)}`);
+  }, []);
 
   const checkAuthStatus = async () => {
     try {
@@ -63,6 +70,7 @@ export default function AuthButtonsClient({ initialAuth, initialUsername }: Prop
 
   const handleLogout = async () => {
     try {
+      const currentPath = window.location.pathname + window.location.search;
       const response = await fetch("/api/logout", {
         method: "POST",
         credentials: "same-origin",
@@ -70,7 +78,7 @@ export default function AuthButtonsClient({ initialAuth, initialUsername }: Prop
       if (response.ok) {
         setIsLoggedIn(false);
         setUsername(undefined);
-        window.location.href = "/";
+        window.location.href = currentPath;
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -93,7 +101,7 @@ export default function AuthButtonsClient({ initialAuth, initialUsername }: Prop
         </>
       ) : (
         <a
-          href="/login/github"
+          href={loginHref}
           className="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4"
         >
           Login

@@ -45,7 +45,11 @@ if (!post) {
 if (post.protected) {
   const session = Astro.locals.session;
   if (!session) {
-    return Astro.redirect('/login?redirect=' + encodeURIComponent(Astro.url.pathname), 302);
+    const loginUrl = new URL('/login', Astro.url);
+    loginUrl.searchParams.set('redirect', Astro.url.pathname);
+    loginUrl.searchParams.set('reason', 'protected_post');
+    loginUrl.searchParams.set('title', post.title);
+    return Astro.redirect(loginUrl.toString(), 302);
   }
 }
 

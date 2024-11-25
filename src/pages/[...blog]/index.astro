@@ -19,6 +19,8 @@ export const prerender = false;
 // 从URL中获取博客文章的permalink
 const blogPath = Astro.params.blog;
 console.log('Blog Path:', blogPath);
+console.log('Session:', Astro.locals.session);
+console.log('User:', Astro.locals.user);
 
 if (!blogPath) {
   return Astro.redirect('/404', 404);

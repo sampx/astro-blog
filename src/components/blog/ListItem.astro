@@ -17,104 +17,178 @@ export interface Props {
 
 const { post } = Astro.props;
 const image = (await findImage(post.image)) as ImageMetadata | undefined;
-
 const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : '';
 ---
 
-<article
+<article 
   class={`max-w-md mx-auto md:max-w-none grid gap-6 md:gap-8 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade ${image ? 'md:grid-cols-2' : ''}`}
+  data-protected={post.protected ? 'true' : 'false'}
 >
   {
-    image &&
-      (link ? (
-        <a class="relative block group" href={link ?? 'javascript:void(0)'}>
-          <div class="relative h-0 pb-[56.25%] md:pb-[75%] md:h-72 lg:pb-[56.25%] overflow-hidden bg-gray-400 dark:bg-slate-700 rounded shadow-lg">
-            {image && (
-              <Image
-                src={image}
-                class="absolute inset-0 object-cover w-full h-full mb-6 rounded shadow-lg bg-gray-400 dark:bg-slate-700"
-                widths={[400, 900]}
-                width={900}
-                sizes="(max-width: 900px) 400px, 900px"
-                alt={post.title}
-                aspectRatio="16:9"
-                loading="lazy"
-                decoding="async"
-              />
-            )}
-          </div>
-        </a>
-      ) : (
+    image && (
+      <a class="relative block group" href={link ?? 'javascript:void(0)'}>
         <div class="relative h-0 pb-[56.25%] md:pb-[75%] md:h-72 lg:pb-[56.25%] overflow-hidden bg-gray-400 dark:bg-slate-700 rounded shadow-lg">
-          {image && (
-            <Image
-              src={image}
-              class="absolute inset-0 object-cover w-full h-full mb-6 rounded shadow-lg bg-gray-400 dark:bg-slate-700"
-              widths={[400, 900]}
-              width={900}
-              sizes="(max-width: 900px) 400px, 900px"
-              alt={post.title}
-              aspectRatio="16:9"
-              loading="lazy"
-              decoding="async"
-            />
+          <Image
+            src={image}
+            class="absolute inset-0 object-cover w-full h-full mb-6 rounded shadow-lg bg-gray-400 dark:bg-slate-700 protected-image"
+            widths={[400, 900]}
+            width={900}
+            sizes="(max-width: 900px) 400px, 900px"
+            alt={post.title}
+            aspectRatio="16:9"
+            loading="lazy"
+            decoding="async"
+          />
+          {post.protected && (
+            <div class="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm lock-overlay">
+              <div class="bg-primary-600/90 rounded-full p-4 shadow-lg">
+                <Icon name="tabler:lock" class="w-12 h-12 text-white" />
+              </div>
+            </div>
           )}
         </div>
-      ))
+      </a>
+    )
   }
-  <div class="mt-2">
+
+  <div>
     <header>
       <div class="mb-1">
         <span class="text-sm">
-          <Icon name="tabler:clock" class="w-3.5 h-3.5 inline-block -mt-0.5 dark:text-gray-400" />
           <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
-          {
-            post.author && (
-              <>
-                {' '}
-                · <Icon name="tabler:user" class="w-3.5 h-3.5 inline-block -mt-0.5 dark:text-gray-400" />
-                <span>{post.author.replaceAll('-', ' ')}</span>
-              </>
-            )
-          }
-          {
-            post.category && (
-              <>
-                {' '}
-                ·{' '}
-                <a class="hover:underline" href={getPermalink(post.category.slug, 'category')}>
-                  {post.category.title}
-                </a>
-              </>
-            )
-          }
+          {post.category && (
+            <>
+              {' '}
+              ·{' '}
+              <a class="capitalize hover:underline" href={`/category/${post.category}`}>
+                {typeof post.category === 'string' ? post.category.replaceAll('-', ' ') : post.category}
+              </a>
+            </>
+          )}
         </span>
       </div>
       <h2 class="text-xl sm:text-2xl font-bold leading-tight mb-2 font-heading dark:text-slate-300">
-        {
-          link ? (
-            <a
-              class="inline-block hover:text-primary dark:hover:text-blue-700 transition ease-in duration-200"
-              href={link}
-            >
-              {post.title}
-            </a>
-          ) : (
-            post.title
-          )
-        }
+        {link ? (
+          <a
+            class="hover:text-primary-600 underline underline-offset-4 decoration-1 decoration-dotted transition ease-in duration-200"
+            href={link}
+          >
+            {post.protected ? (
+              <span class="flex items-center gap-2 protected-title">
+                <span class="lock-status">
+                  <Icon name="tabler:lock" class="w-5 h-5 text-primary-600 lock-icon" />
+                  <Icon name="tabler:lock-open" class="w-5 h-5 text-green-600 unlock-icon hidden" />
+                </span>
+                {post.title}
+              </span>
+            ) : (
+              post.title
+            )}
+          </a>
+        ) : (
+          post.title
+        )}
       </h2>
     </header>
 
     {post.excerpt && <p class="flex-grow text-muted dark:text-slate-400 text-lg">{post.excerpt}</p>}
-    {
-      post.tags && Array.isArray(post.tags) ? (
-        <footer class="mt-5">
-          <PostTags tags={post.tags} />
-        </footer>
-      ) : (
-        <Fragment />
-      )
-    }
+    <footer class="mt-5">
+      <PostTags tags={post.tags} />
+    </footer>
   </div>
 </article>
+
+<script>
+  /**
+   * 检查并更新认证状态
+   * 通过调用 /api/auth/status 端点来确定用户是否已登录
+   */
+  async function updateAuthStatus() {
+    try {
+      const response = await fetch('/api/auth/status');
+      const isAuthenticated = response.status === 200;
+      updateProtectedContent(isAuthenticated);
+    } catch (error) {
+      updateProtectedContent(false);
+    }
+  }
+
+  /**
+   * 更新受保护内容的显示状态
+   * @param {boolean} isAuthenticated - 用户是否已认证
+   */
+  function updateProtectedContent(isAuthenticated) {
+    const protectedArticles = document.querySelectorAll('article[data-protected="true"]');
+    
+    protectedArticles.forEach(article => {
+      if (isAuthenticated) {
+        article.classList.add('is-authenticated');
+        article.classList.remove('not-authenticated');
+      } else {
+        article.classList.remove('is-authenticated');
+        article.classList.add('not-authenticated');
+      }
+    });
+  }
+
+  // 初始化未认证状态
+  document.querySelectorAll('article[data-protected="true"]').forEach(article => {
+    article.classList.add('not-authenticated');
+  });
+
+  // 页面加载时检查认证状态
+  updateAuthStatus();
+
+  // 监听页面导航事件
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('article[data-protected="true"]').forEach(article => {
+      article.classList.add('not-authenticated');
+    });
+    updateAuthStatus();
+  });
+</script>
+
+<style>
+  /* 未登录状态样式 */
+  article.not-authenticated .protected-image {
+    filter: blur(4px);
+  }
+
+  article.not-authenticated .lock-overlay {
+    display: flex;
+  }
+
+  article.not-authenticated .lock-icon {
+    display: block;
+  }
+
+  article.not-authenticated .unlock-icon {
+    display: none;
+  }
+
+  /* 已登录状态样式 */
+  article.is-authenticated .protected-image {
+    filter: none;
+  }
+
+  article.is-authenticated .lock-overlay {
+    display: none;
+  }
+
+  article.is-authenticated .lock-icon {
+    display: none;
+  }
+
+  article.is-authenticated .unlock-icon {
+    display: block;
+  }
+
+  /* 过渡动画 */
+  .protected-image {
+    transition: filter 0.3s ease-in-out;
+  }
+
+  .lock-overlay {
+    transition: opacity 0.3s ease-in-out;
+  }
+</style>

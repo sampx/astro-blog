@@ -38,12 +38,11 @@ const isLoggedIn = Astro.locals.user !== null;
           <>
             {' '}
             ·{' '}
-            <a class="capitalize hover:underline inline-block" href={`/category/${post.category}`}>
-              {typeof post.category === 'string' ? post.category.replaceAll('-', ' ') : post.category}
+            <a class="capitalize hover:underline inline-block" href={`/category/${post.category.slug}`}>
+              {post.category.title}
             </a>
           </>
         )}
-        {post.protected && <span class="ml-2 text-primary-600">· Protected</span>}
       </p>
       <h1
         class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-8 font-heading flex items-center justify-center gap-2"

@@ -62,8 +62,8 @@ const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : 
             <>
               {' '}
               ·{' '}
-              <a class="capitalize hover:underline" href={`/category/${post.category}`}>
-                {typeof post.category === 'string' ? post.category.replaceAll('-', ' ') : post.category}
+              <a class="capitalize hover:underline" href={`/category/${post.category.slug}`}>
+                {post.category.title}
               </a>
             </>
           )}

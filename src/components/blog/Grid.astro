@@ -1,14 +1,17 @@
 ---
 import Item from '~/components/blog/GridItem.astro';
+import RelatedItem from '~/components/blog/RelatedPostItem.astro';
 import type { Post } from '~/types';
 
 export interface Props {
   posts: Array<Post>;
+  isRelated?: boolean;
 }
 
-const { posts } = Astro.props;
+const { posts, isRelated = false } = Astro.props;
+const ItemComponent = isRelated ? RelatedItem : Item;
 ---
 
 <div class="grid gap-6 row-gap-5 md:grid-cols-2 lg:grid-cols-4 -mb-6">
-  {posts.map((post) => <Item post={post} />)}
+  {posts.map((post) => <ItemComponent post={post} />)}
 </div>

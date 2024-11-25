@@ -116,7 +116,7 @@ if (post.protected) {
               const loginWindow = window.open(
                 '${loginUrl.toString()}',
                 'Login',
-                \`width=\${width},height=\${height},left=\${left},top=\${top},popup=1,toolbar=0\`
+                'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',popup=1,toolbar=0'
               );
 
               if (!loginWindow) {

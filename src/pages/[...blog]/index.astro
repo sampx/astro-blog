@@ -18,26 +18,20 @@ export const prerender = false;
 
 // 从URL中获取博客文章的permalink
 const blogPath = Astro.params.blog;
-console.log('Blog Path:', blogPath);
-console.log('Session:', Astro.locals.session);
-console.log('User:', Astro.locals.user);
 
 if (!blogPath) {
   return Astro.redirect('/404', 404);
 }
 
-// 获取所有文章并打印它们的permalinks
+// 获取所有文章
 const allPosts = await fetchPosts();
-console.log('Available permalinks:', allPosts.map(p => p.permalink));
 
 // 根据permalink查找文章
 const posts = await findPostsByPermalink([blogPath]);
-console.log('Found posts:', posts.length);
 const post = posts[0];
 
 // 如果文章不存在，返回404
 if (!post) {
-  console.log('Post not found for path:', blogPath);
   return Astro.redirect('/404', 404);
 }
 

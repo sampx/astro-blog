@@ -23,7 +23,7 @@ export default function ProtectedContent({ post, children }: Props) {
           return;
         }
       } catch (error) {
-        console.error('Failed to check auth status:', error);
+        // 静默处理错误，返回未授权状态
         setIsLoggedIn(false);
       } finally {
         setIsLoading(false);

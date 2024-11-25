@@ -144,12 +144,12 @@ export async function GET(context: APIContext): Promise<Response> {
       },
     });
   } catch (error) {
-    console.error("Error during GitHub OAuth:", error);
+    // 静默处理错误，返回登录失败响应
     return new Response(null, {
       status: 302,
       headers: {
-        Location: `/login?error=${encodeURIComponent("Authentication failed")}&redirect=${encodeURIComponent(storedRedirect)}`,
-      },
+        Location: `/login?error=${encodeURIComponent('登录失败，请重试')}`
+      }
     });
   }
 }

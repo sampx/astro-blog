@@ -63,6 +63,7 @@ const getNormalizedPost = async (
     category: rawCategory,
     author,
     draft = false,
+    protected: isProtected = false,
     metadata = {},
   } = data;
 
@@ -104,6 +105,7 @@ const getNormalizedPost = async (
     author: author,
 
     draft: draft,
+    protected: isProtected,
 
     metadata,
 
@@ -333,6 +335,22 @@ export async function getRelatedPosts(
 
   return selectedPosts;
 }
+
+/** */
+export const findPostsByPermalink = async (
+  permalinks: Array<string>,
+): Promise<Array<Post>> => {
+  if (!Array.isArray(permalinks)) return [];
+
+  const posts = await fetchPosts();
+
+  return permalinks.reduce(function (r: Array<Post>, permalink: string) {
+    posts.some(function (post: Post) {
+      return permalink === post.permalink && r.push(post);
+    });
+    return r;
+  }, []);
+};
 
 /** */
 export const findCategories = async (): Promise<Array<{ slug: string; title: string; count: number }>> => {

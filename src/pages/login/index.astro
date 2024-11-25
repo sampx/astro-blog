@@ -3,6 +3,9 @@ if (Astro.locals.session !== null) {
   return Astro.redirect("/");
 }
 
+const error = Astro.url.searchParams.get("error");
+const redirect = Astro.url.searchParams.get("redirect");
+
 import Layout from "~/layouts/PageLayout.astro";
 ---
 
@@ -15,8 +18,13 @@ import Layout from "~/layouts/PageLayout.astro";
           <h1 class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading dark:text-gray-200">
             Sign In
           </h1>
+          {error && (
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 max-w-md mx-auto" role="alert">
+              <span class="block sm:inline">{decodeURIComponent(error)}</span>
+            </div>
+          )}
           <a
-            href="/login/github"
+            href={`/login/github${redirect ? `?redirect=${encodeURIComponent(redirect)}` : ""}`}
             class="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4 mt-4"
           >
             Sign in with GitHub

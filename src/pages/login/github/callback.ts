@@ -69,7 +69,7 @@ export async function GET(context: APIContext): Promise<Response> {
       const session = createSession(sessionToken, existingUser.id);
       setSessionTokenCookie(context, sessionToken, session.expiresAt);
       
-      // 返回一个HTML页面，该页面会关闭自己并刷新父窗口
+      // 返回一个HTML页面，该页面会关闭自己并让父窗口跳转
       return new Response(`
         <!DOCTYPE html>
         <html>
@@ -121,7 +121,7 @@ export async function GET(context: APIContext): Promise<Response> {
     const session = createSession(sessionToken, user.id);
     setSessionTokenCookie(context, sessionToken, session.expiresAt);
 
-    // 返回一个HTML页面，该页面会关闭自己并刷新父窗口
+    // 返回一个HTML页面，该页面会关闭自己并让父窗口跳转
     return new Response(`
       <!DOCTYPE html>
       <html>

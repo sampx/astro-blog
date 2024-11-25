@@ -2,29 +2,35 @@
 publishDate: 2024-01-25T00:00:00Z
 title: Protected Content Example
 excerpt: This is an example of a protected blog post that requires login to view.
+image: ~/assets/images/lock-hero.jpg
 tags:
   - example
   - protected
 protected: true
 ---
 
-# Protected Content Example
+This is an example of protected content. You need to be logged in to view this post.
 
-This is an example of protected content that is only visible to logged-in users. If you're seeing this content, it means you have successfully authenticated.
+## What is Protected Content?
 
-## What's Inside?
+Protected content is content that requires authentication to access. This could be:
+- Premium articles
+- Member-only tutorials
+- Exclusive resources
+- Private documentation
 
-This post demonstrates how to use the `protected` frontmatter property to restrict access to certain blog posts. This feature is useful for:
+## Why Use Protected Content?
 
-1. Premium content
-2. Member-only articles
+There are several reasons to protect certain content:
+1. Premium content monetization
+2. Member exclusivity
 3. Internal documentation
-4. Draft posts
+4. Sensitive information protection
 
-## How It Works
+## How Does It Work?
 
-When a post is marked with `protected: true` in its frontmatter, the content is automatically wrapped in a component that checks the user's authentication status. If the user is not logged in, they will see a message asking them to log in instead of the actual content.
-
-## Security Considerations
-
-Remember that this is a client-side protection mechanism. While it's suitable for most use cases, sensitive information should always be protected at the API level as well.
+When you try to access a protected post:
+1. The system checks if you're logged in
+2. If not, you're redirected to the login page
+3. After logging in, you're redirected back to the protected content
+4. The content is then displayed with a special lock icon

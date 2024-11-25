@@ -1,0 +1,26 @@
+---
+import { Icon } from 'astro-icon/components';
+import Image from '~/components/common/Image.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  class?: string;
+}
+
+const { src, alt, class: className = '' } = Astro.props;
+---
+
+<div class={`relative ${className}`}>
+  <Image
+    src={src}
+    class="w-full h-full rounded shadow-lg bg-gray-400 dark:bg-slate-700"
+    widths={[400, 900]}
+    sizes="(max-width: 900px) 400px, 900px"
+    alt={alt}
+    aspectRatio="16:9"
+    loading="lazy"
+    decoding="async"
+  />
+</div>

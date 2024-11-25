@@ -1,11 +1,12 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import type { Post } from '~/types';
 
 import PostTags from '~/components/blog/Tags.astro';
 import SocialShare from '~/components/common/SocialShare.astro';
 import ProtectedContent from './ProtectedContent';
+import ProtectedImage from './ProtectedImage.astro';
+import { Icon } from "astro-icon/components";
 
 import { getFormattedDate } from '~/utils/utils';
 
@@ -16,31 +17,41 @@ interface Props {
 
 const { post, url } = Astro.props;
 const Content = post.Content;
+const isLoggedIn = Astro.locals.user !== null;
+
 ---
 
 <section class="py-8 sm:py-16 lg:py-20 mx-auto">
   <article>
-    <header class={post.image ? 'text-center' : ''}>
-      <p class="px-4 sm:px-6 max-w-3xl mx-auto">
-        <time datetime={post.publishDate.toISOString()}>
-          {getFormattedDate(post.publishDate)}
-        </time>
+    <header>
+      <p class="max-w-3xl mx-auto px-4 sm:px-6 text-center text-sm md:text-base text-gray-500 dark:text-slate-400">
         {
-          post.category && (
-            <>
-              {' '}
-              ·{' '}
-              <a class="capitalize hover:underline" href={`/category/${post.category.slug}`}>
-                {post.category.title}
-              </a>
-            </>
+          post.publishDate && (
+            <time datetime={String(post.publishDate)} class="inline-block">
+              {getFormattedDate(post.publishDate)}
+            </time>
           )
         }
+        {post.category && (
+          <>
+            {' '}
+            ·{' '}
+            <a class="capitalize hover:underline inline-block" href={`/category/${post.category}`}>
+              {typeof post.category === 'string' ? post.category.replaceAll('-', ' ') : post.category}
+            </a>
+          </>
+        )}
         {post.protected && <span class="ml-2 text-primary-600">· Protected</span>}
       </p>
       <h1
-        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-8 font-heading"
+        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-8 font-heading flex items-center justify-center gap-2"
       >
+        {post.protected && (
+          <Icon 
+            name={isLoggedIn ? "tabler:lock-open" : "tabler:lock"} 
+            class={`w-8 h-8 ${isLoggedIn ? 'text-green-600' : 'text-primary-600'}`}
+          />
+        )}
         {post.title}
       </h1>
       {
@@ -52,6 +63,29 @@ const Content = post.Content;
       }
 
       <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8">
+        {
+          post.image && (
+            post.protected ? (
+              <ProtectedImage
+                src={post.image}
+                alt={post.title}
+                class="mb-6"
+              />
+            ) : (
+              <Image
+                src={post.image}
+                class="w-full h-auto rounded-md mb-6 shadow-lg bg-gray-400 dark:bg-slate-700"
+                widths={[400, 900]}
+                sizes="(max-width: 900px) 400px, 900px"
+                alt={post.title}
+                width={900}
+                height={506}
+                loading="eager"
+                decoding="async"
+              />
+            )
+          )
+        }
         <PostTags tags={post.tags} class="mr-5" />
         <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle" />
       </div>

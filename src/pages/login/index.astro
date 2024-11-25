@@ -1,36 +1,93 @@
 ---
+// 使用服务端渲染模式
+export const prerender = false;
+
 if (Astro.locals.session !== null) {
   return Astro.redirect("/");
 }
 
 const error = Astro.url.searchParams.get("error");
 const redirect = Astro.url.searchParams.get("redirect");
+const reason = Astro.url.searchParams.get("reason");
+const title = Astro.url.searchParams.get("title");
+
+// 调试信息
+console.log('Login page params:', {
+  error,
+  redirect,
+  reason,
+  title
+});
+
+// 根据不同原因生成友好的消息
+let welcomeMessage = "欢迎回来！";
+let description = "登录以访问更多精彩内容。";
+
+if (reason === "protected_post" && title) {
+  welcomeMessage = "欢迎您!";
+  description = `这是一篇受保护的文章，登录后即可阅读!`;
+}
 
 import Layout from "~/layouts/PageLayout.astro";
+import { Icon } from "astro-icon/components";
 ---
 
-<Layout meta={{ title: "Sign In" }}>
-  <section class="relative md:py-32 not-prose">
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="pt-0 md:pt-[76px] pointer-events-none"></div>
-      <div class="py-4 md:py-8">
-        <div class="text-center max-w-screen-lg mx-auto">
-          <h1 class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading dark:text-gray-200">
-            Sign In
-          </h1>
-          {error && (
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 max-w-md mx-auto" role="alert">
-              <span class="block sm:inline">{decodeURIComponent(error)}</span>
+<Layout metadata={{ title: "登录" }}>
+  <div class="min-h-[80vh] flex items-center justify-center bg-page py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-900 p-10 rounded-xl shadow-lg">
+      <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+          {welcomeMessage}
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+          {description}
+        </p>
+      </div>
+
+      {error && (
+        <div class="rounded-md bg-red-50 dark:bg-red-900/50 p-4 mb-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <Icon name="tabler:alert-circle" class="w-5 h-5 text-red-400" />
             </div>
-          )}
+            <div class="ml-3">
+              <p class="text-sm font-medium text-red-800 dark:text-red-200">
+                {decodeURIComponent(error)}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div class="mt-8">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-400">
+              请使用以下方式登录
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-8 flex justify-center space-x-8">
           <a
             href={`/login/github${redirect ? `?redirect=${encodeURIComponent(redirect)}` : ""}`}
-            class="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4 mt-4"
+            class="p-4 rounded-full bg-primary hover:bg-primary-600 text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-slate-900"
+            title="使用 GitHub 账号登录"
           >
-            Sign in with GitHub
+            <Icon name="tabler:brand-github" class="w-8 h-8" />
           </a>
+          <button
+            class="p-4 rounded-full bg-primary hover:bg-primary-600 text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-slate-900"
+            title="使用微信账号登录"
+            onclick="alert('微信登录功能即将上线，敬请期待！')"
+          >
+            <Icon name="tabler:brand-wechat" class="w-8 h-8" />
+          </button>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </Layout>

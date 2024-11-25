@@ -1,0 +1,28 @@
+---
+if (Astro.locals.session !== null) {
+  return Astro.redirect("/");
+}
+
+import Layout from "~/layouts/PageLayout.astro";
+---
+
+<Layout meta={{ title: "Sign In" }}>
+  <section class="relative md:py-32 not-prose">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="pt-0 md:pt-[76px] pointer-events-none"></div>
+      <div class="py-4 md:py-8">
+        <div class="text-center max-w-screen-lg mx-auto">
+          <h1 class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading dark:text-gray-200">
+            Sign In
+          </h1>
+          <a
+            href="/login/github"
+            class="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4 mt-4"
+          >
+            Sign in with GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

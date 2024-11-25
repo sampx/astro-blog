@@ -1,4 +1,3 @@
-import { LinkPreview } from "astro-embed";
 import { getPermalink, getHomePermalink, getBlogPermalink, getAsset } from "./utils/permalinks";
 
 export const headerData = {
@@ -11,13 +10,6 @@ export const headerData = {
       text: "Blog",
       href: getBlogPermalink(),
     },    
-  ],
-  actions: [
-    {
-      text: "Login",
-      href: "/",
-      target: "_blank",
-    },
   ],
 };
 

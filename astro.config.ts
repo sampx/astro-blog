@@ -2,6 +2,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import { defineConfig } from "astro/config";
+import node from '@astrojs/node';
+import react from '@astrojs/react';
 
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
@@ -32,9 +34,13 @@ const whenExternalScripts = (
     : [];
 
 export default defineConfig({
-  output: "static",
+  output: "hybrid",
+  adapter: node({
+    mode: "standalone"
+  }),
 
   integrations: [
+    react(),
     tailwind({
       applyBaseStyles: false,
     }),

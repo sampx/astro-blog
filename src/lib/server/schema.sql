@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS user (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    github_id INTEGER UNIQUE NOT NULL,
+    email TEXT NOT NULL,
+    username TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS session (
+    id TEXT PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    expires_at INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);

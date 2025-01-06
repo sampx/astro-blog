@@ -26,10 +26,6 @@ const adapter: SyncAdapter<sqlite3.RunResult> = {
       .all(...params);
     return result as unknown[][];
   },
-  queryOne: (statement: string, params: unknown[]): unknown[] | null => {
-    const result = sqlite.prepare(statement).raw().get(...params);
-    return result === undefined ? null : (result as unknown[]);
-  },
   execute: (statement: string, params: unknown[]): sqlite3.RunResult => {
     const result = sqlite.prepare(statement).run(...params);
     return result;

@@ -5,11 +5,15 @@ import { findCategories } from '~/utils/blog';
 const allCategories = await findCategories();
 ---
 
-<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-lg border border-gray-100 dark:border-slate-700">
   <PostTags 
-    tags={allCategories.map(cat => ({ slug: cat.slug, title: `${cat.title} (${cat.count})` }))} 
+    tags={allCategories.map(cat => ({ 
+      slug: cat.slug, 
+      title: `${cat.title} (${cat.count})` 
+    }))} 
     class="mb-2" 
-    title="Categories" 
+    title="Categories"
+    titleClass="text-xl font-bold font-heading mb-4 text-gray-900 dark:text-slate-300 no-underline block" 
     isCategory={true} 
   />
 </div>

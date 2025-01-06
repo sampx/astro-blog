@@ -49,8 +49,8 @@ const isLoggedIn = Astro.locals.user !== null;
       >
         {post.protected && (
           <Icon 
-            name={isLoggedIn ? "tabler:lock-open" : "tabler:lock"} 
-            class={`w-8 h-8 ${isLoggedIn ? 'text-green-600' : 'text-primary-600'}`}
+            name="tabler:lock-open" 
+            class="w-8 h-8 text-green-600"
           />
         )}
         {post.title}
@@ -65,26 +65,18 @@ const isLoggedIn = Astro.locals.user !== null;
 
       <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8">
         {
-          post.image && (
-            post.protected ? (
-              <ProtectedImage
-                src={post.image}
-                alt={post.title}
-                class="mb-6"
-              />
-            ) : (
-              <Image
-                src={post.image}
-                class="w-full h-auto rounded-md mb-6 shadow-lg bg-gray-400 dark:bg-slate-700"
-                widths={[400, 900]}
-                sizes="(max-width: 900px) 400px, 900px"
-                alt={post.title}
-                width={900}
-                height={506}
-                loading="eager"
-                decoding="async"
-              />
-            )
+          post.image && (           
+            <Image
+              src={post.image}
+              class="w-full h-auto rounded-md mb-6 shadow-lg bg-gray-400 dark:bg-slate-700"
+              widths={[400, 900]}
+              sizes="(max-width: 900px) 400px, 900px"
+              alt={post.title}
+              width={900}
+              height={506}
+              loading="eager"
+              decoding="async"
+            />       
           )
         }
         <PostTags tags={post.tags} class="mr-5" />

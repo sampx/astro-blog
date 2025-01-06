@@ -32,27 +32,32 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <section class="px-4 sm:px-6 py-8 sm:py-12 lg:py-16 mx-auto max-w-7xl">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-      <Sidebar>
-        <PostTags 
-          tags={allCategories.map(cat => ({ slug: cat.slug, title: `${cat.title} (${cat.count})` }))} 
-          class="mb-2" 
-          title="Categories" 
-          isCategory={true} 
-        />
-        <PostTags 
-          tags={allTags.map(tag => ({ slug: tag.slug, title: `${tag.title} (${tag.count})` }))} 
-          title="Tags" 
-        />
-      </Sidebar>
+  <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-6 lg:gap-8 md:grid-cols-12">
+      <aside class="md:col-span-3">
+        <div class="sticky top-8 space-y-4">
+          <Sidebar>
+            <PostTags 
+              tags={allCategories.map(cat => ({ slug: cat.slug, title: `${cat.title} (${cat.count})` }))} 
+              class="mb-6" 
+              title="Categories" 
+              isCategory={true} 
+            />
+            <PostTags 
+              tags={allTags.map(tag => ({ slug: tag.slug, title: `${tag.title} (${tag.count})` }))} 
+              title="Tags" 
+            />
+          </Sidebar>
+        </div>
+      </aside>
       
-      {/* 右侧内容区 */}
       <main class="md:col-span-9">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+        <div class="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900/70 backdrop-blur border dark:border-slate-800">
           <h1 class="text-2xl font-bold mb-6">Category: {category.title}</h1>
           <BlogList posts={page.data} />
-          <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+          <div class="mt-8 flex justify-center">
+            <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+          </div>
         </div>
       </main>
     </div>

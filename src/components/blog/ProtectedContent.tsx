@@ -29,13 +29,7 @@ export default function ProtectedContent({ post, children }: Props) {
         setIsLoading(false);
       }
     };
-
-    if (post.protected) {
-      checkAuth();
-    } else {
-      setIsLoggedIn(true);
-      setIsLoading(false);
-    }
+    checkAuth();    
   }, [post.protected]);
 
   if (isLoading) {

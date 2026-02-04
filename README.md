@@ -14,15 +14,13 @@
 1.  **安装依赖**：
 
     ```bash
-    npm install
-    # 或者
     pnpm install
     ```
 
 2.  **启动开发服务器**：
 
     ```bash
-    npm run dev
+    pnpm dev
     ```
 
     访问 `http://localhost:4321` 查看效果。
@@ -94,7 +92,7 @@ image: "~/assets/images/course-cover.jpg"
 ## 构建与部署
 
 ```bash
-npm run build
+pnpm build
 ```
 
 构建产物将位于 `dist/` 目录。

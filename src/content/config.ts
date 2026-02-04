@@ -61,6 +61,16 @@ const postCollection = defineCollection({
   }),
 });
 
+const productsCollection = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    price: z.number(),
+    description: z.string().optional(),
+    image: z.string().optional(),
+  }),
+});
+
 export const collections = {
   post: postCollection,
+  products: productsCollection,
 };

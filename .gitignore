@@ -3,9 +3,6 @@ dist/
 # generated types
 .astro/
 
-# backups
-src-back/
-
 # dependencies
 node_modules/
 
@@ -31,4 +28,10 @@ backups/
 # pnpm temporary files
 ~
 
+# ai
+CLAUDE.md
+GEMINI.md
+
+# data & db & backup
+src-back/
 sqlite.db

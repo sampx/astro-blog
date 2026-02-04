@@ -28,12 +28,12 @@ export function createSession(token: string, userId: number): Session {
   const session: Session = {
     id: sessionId,
     userId,
-    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
   };
   db.execute("INSERT INTO session (id, user_id, expires_at) VALUES (?, ?, ?)", [
     session.id,
     session.userId,
-    Math.floor(session.expiresAt.getTime() / 1000)
+    Math.floor(session.expiresAt.getTime() / 1000),
   ]);
   return session;
 }
@@ -46,7 +46,7 @@ SELECT session.id, session.user_id, session.expires_at, user.id, user.github_id,
 INNER JOIN user ON session.user_id = user.id
 WHERE session.id = ?
 `,
-    [sessionId]
+    [sessionId],
   );
 
   if (row === null) {
@@ -55,13 +55,13 @@ WHERE session.id = ?
   const session: Session = {
     id: row.string(0),
     userId: row.number(1),
-    expiresAt: new Date(row.number(2) * 1000)
+    expiresAt: new Date(row.number(2) * 1000),
   };
   const user: User = {
     id: row.number(3),
     githubId: row.number(4),
     email: row.string(5),
-    username: row.string(6)
+    username: row.string(6),
   };
   if (Date.now() >= session.expiresAt.getTime()) {
     db.execute("DELETE FROM session WHERE id = ?", [session.id]);
@@ -71,7 +71,7 @@ WHERE session.id = ?
     session.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
     db.execute("UPDATE session SET expires_at = ? WHERE session.id = ?", [
       Math.floor(session.expiresAt.getTime() / 1000),
-      session.id
+      session.id,
     ]);
   }
   return { session, user };
@@ -85,13 +85,17 @@ export function invalidateUserSessions(userId: number): void {
   db.execute("DELETE FROM session WHERE user_id = ?", [userId]);
 }
 
-export function setSessionTokenCookie(context: APIContext, token: string, expiresAt: Date): void {
+export function setSessionTokenCookie(
+  context: APIContext,
+  token: string,
+  expiresAt: Date,
+): void {
   context.cookies.set("session", token, {
     httpOnly: true,
     path: "/",
     secure: import.meta.env.PROD,
     sameSite: "lax",
-    expires: expiresAt
+    expires: expiresAt,
   });
 }
 
@@ -101,6 +105,6 @@ export function deleteSessionTokenCookie(context: APIContext): void {
     path: "/",
     secure: import.meta.env.PROD,
     sameSite: "lax",
-    maxAge: 0
+    maxAge: 0,
   });
 }

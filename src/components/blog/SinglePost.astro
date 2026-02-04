@@ -1,11 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import type { Post } from '~/types';
+import { Fragment } from 'astro/jsx-runtime';
 
 import PostTags from '~/components/blog/Tags.astro';
 import SocialShare from '~/components/common/SocialShare.astro';
 import ProtectedContent from './ProtectedContent';
-import ProtectedImage from './ProtectedImage.astro';
 import { Icon } from "astro-icon/components";
 
 import { getFormattedDate } from '~/utils/utils';
@@ -18,8 +18,9 @@ interface Props {
 }
 
 const { post, url } = Astro.props;
-const Content = post.Content;
-const isLoggedIn = Astro.locals.user !== null;
+const Content = post.Content || Fragment;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const PostContent = Content as any;
 
 ---
 
@@ -89,10 +90,10 @@ const isLoggedIn = Astro.locals.user !== null;
       {
         post.protected ? (
           <ProtectedContent post={post} client:load>
-            <Content />
+            <PostContent />
           </ProtectedContent>
         ) : (
-          <Content />
+          <PostContent />
         )
       }
     </div>

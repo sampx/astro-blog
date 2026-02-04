@@ -1,5 +1,9 @@
 import { defineMiddleware, sequence } from "astro:middleware";
-import { deleteSessionTokenCookie, setSessionTokenCookie, validateSessionToken } from "~/lib/server/session";
+import {
+  deleteSessionTokenCookie,
+  setSessionTokenCookie,
+  validateSessionToken,
+} from "~/lib/server/session";
 
 const authMiddleware = defineMiddleware((context, next) => {
   const token = context.cookies.get("session")?.value ?? null;

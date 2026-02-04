@@ -353,40 +353,63 @@ export const findPostsByPermalink = async (
 };
 
 /** */
-export const findCategories = async (): Promise<Array<{ slug: string; title: string; count: number }>> => {
+export const findCategories = async (): Promise<
+  Array<{ slug: string; title: string; count: number }>
+> => {
   const posts = await fetchPosts();
-  const categoryMap = new Map<string, { slug: string; title: string; count: number }>();
+  const categoryMap = new Map<
+    string,
+    { slug: string; title: string; count: number }
+  >();
 
   // Count posts for each category
   posts.forEach((post) => {
     const category = post.category;
     if (category?.slug && category?.title) {
-      const existing = categoryMap.get(category.slug) || { slug: category.slug, title: category.title, count: 0 };
-      categoryMap.set(category.slug, { ...existing, count: existing.count + 1 });
+      const existing = categoryMap.get(category.slug) || {
+        slug: category.slug,
+        title: category.title,
+        count: 0,
+      };
+      categoryMap.set(category.slug, {
+        ...existing,
+        count: existing.count + 1,
+      });
     }
   });
 
   // Convert to array and sort by count (descending) then title (ascending)
-  return Array.from(categoryMap.values())
-    .sort((a, b) => b.count - a.count || a.title.localeCompare(b.title));
+  return Array.from(categoryMap.values()).sort(
+    (a, b) => b.count - a.count || a.title.localeCompare(b.title),
+  );
 };
 
 /** */
-export const findTags = async (): Promise<Array<{ slug: string; title: string; count: number }>> => {
+export const findTags = async (): Promise<
+  Array<{ slug: string; title: string; count: number }>
+> => {
   const posts = await fetchPosts();
-  const tagMap = new Map<string, { slug: string; title: string; count: number }>();
+  const tagMap = new Map<
+    string,
+    { slug: string; title: string; count: number }
+  >();
 
   // Count posts for each tag
   posts.forEach((post) => {
     post.tags?.forEach((tag) => {
       if (tag.slug && tag.title) {
-        const existing = tagMap.get(tag.slug) || { slug: tag.slug, title: tag.title, count: 0 };
+        const existing = tagMap.get(tag.slug) || {
+          slug: tag.slug,
+          title: tag.title,
+          count: 0,
+        };
         tagMap.set(tag.slug, { ...existing, count: existing.count + 1 });
       }
     });
   });
 
   // Convert to array and sort by count (descending) then title (ascending)
-  return Array.from(tagMap.values())
-    .sort((a, b) => b.count - a.count || a.title.localeCompare(b.title));
+  return Array.from(tagMap.values()).sort(
+    (a, b) => b.count - a.count || a.title.localeCompare(b.title),
+  );
 };

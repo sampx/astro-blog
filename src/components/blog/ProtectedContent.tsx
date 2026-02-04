@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import type { Post } from '~/types';
+import { useEffect, useState } from "react";
+import type { Post } from "~/types";
 
 interface Props {
   post: Post;
@@ -13,7 +13,7 @@ export default function ProtectedContent({ post, children }: Props) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/auth/status');
+        const response = await fetch("/api/auth/status");
         if (response.ok) {
           setIsLoggedIn(true);
         } else {
@@ -22,14 +22,14 @@ export default function ProtectedContent({ post, children }: Props) {
           window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
           return;
         }
-      } catch (error) {
+      } catch {
         // 静默处理错误，返回未授权状态
         setIsLoggedIn(false);
       } finally {
         setIsLoading(false);
       }
     };
-    checkAuth();    
+    checkAuth();
   }, [post.protected]);
 
   if (isLoading) {

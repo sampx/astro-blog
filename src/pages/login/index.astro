@@ -3,8 +3,6 @@
 export const prerender = false;
 
 if (Astro.locals.session !== null) {
-  const redirect = Astro.url.searchParams.get("redirect") || "/";
-  
   // 如果已登录且在弹出窗口中，关闭窗口并让父窗口跳转
   return new Response(`
     <!DOCTYPE html>
@@ -13,10 +11,10 @@ if (Astro.locals.session !== null) {
       <body>
         <script>
           if (window.opener) {
-            window.opener.location.href = "${redirect}";
+            window.opener.location.href = "${Astro.url.searchParams.get("redirect") || "/"}";
             window.close();
           } else {
-            window.location.href = "${redirect}";
+            window.location.href = "${Astro.url.searchParams.get("redirect") || "/"}";
           }
         </script>
       </body>

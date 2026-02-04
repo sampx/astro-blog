@@ -2,7 +2,11 @@ import type { APIContext } from "astro";
 import { github } from "~/lib/server/oauth";
 import { ObjectParser } from "@pilcrowjs/object-parser";
 import { createUser, getUserFromGitHubId } from "~/lib/server/user";
-import { createSession, generateSessionToken, setSessionTokenCookie } from "~/lib/server/session";
+import {
+  createSession,
+  generateSessionToken,
+  setSessionTokenCookie,
+} from "~/lib/server/session";
 
 export const prerender = false;
 
@@ -12,7 +16,8 @@ export async function GET(context: APIContext): Promise<Response> {
   const state = context.url.searchParams.get("state");
   const error = context.url.searchParams.get("error");
   const errorDescription = context.url.searchParams.get("error_description");
-  const storedRedirect = context.cookies.get("github_oauth_redirect")?.value ?? "/";
+  const storedRedirect =
+    context.cookies.get("github_oauth_redirect")?.value ?? "/";
 
   // 清除 OAuth 相关的 cookie
   context.cookies.delete("github_oauth_state", { path: "/" });
@@ -68,9 +73,10 @@ export async function GET(context: APIContext): Promise<Response> {
       const sessionToken = generateSessionToken();
       const session = createSession(sessionToken, existingUser.id);
       setSessionTokenCookie(context, sessionToken, session.expiresAt);
-      
+
       // 返回一个HTML页面，该页面会关闭自己并让父窗口跳转
-      return new Response(`
+      return new Response(
+        `
         <!DOCTYPE html>
         <html>
           <head><title>登录成功</title></head>
@@ -85,36 +91,39 @@ export async function GET(context: APIContext): Promise<Response> {
             </script>
           </body>
         </html>
-      `, {
-        status: 200,
-        headers: {
-          "Content-Type": "text/html",
+      `,
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "text/html",
+          },
         },
-      });
+      );
     }
 
     // 获取邮箱信息
     const emailListRequest = new Request("https://api.github.com/user/emails");
-    emailListRequest.headers.set("Authorization", `Bearer ${githubAccessToken}`);
+    emailListRequest.headers.set(
+      "Authorization",
+      `Bearer ${githubAccessToken}`,
+    );
     const emailListResponse = await fetch(emailListRequest);
     const emailListResult: unknown = await emailListResponse.json();
     const emailListParser = new ObjectParser(emailListResult);
 
-    const primaryEmail = emailListParser
-      .getArray()
-      .find((email) => email.getBoolean("primary"))
-      ?.getString("email");
+    const emails = emailListParser.getArray();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const primaryEmailObj = emails.find((email: any) => email.primary) as
+      | { email: string }
+      | undefined;
+    const primaryEmail = primaryEmailObj ? primaryEmailObj.email : null;
 
     if (!primaryEmail) {
       throw new Error("No primary email found");
     }
 
     // 创建新用户
-    const user = createUser({
-      githubId: githubUserId,
-      username: username,
-      email: primaryEmail,
-    });
+    const user = createUser(githubUserId, primaryEmail, username);
 
     // 创建会话
     const sessionToken = generateSessionToken();
@@ -122,7 +131,8 @@ export async function GET(context: APIContext): Promise<Response> {
     setSessionTokenCookie(context, sessionToken, session.expiresAt);
 
     // 返回一个HTML页面，该页面会关闭自己并让父窗口跳转
-    return new Response(`
+    return new Response(
+      `
       <!DOCTYPE html>
       <html>
         <head><title>登录成功</title></head>
@@ -137,19 +147,21 @@ export async function GET(context: APIContext): Promise<Response> {
           </script>
         </body>
       </html>
-    `, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/html",
+    `,
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "text/html",
+        },
       },
-    });
-  } catch (error) {
+    );
+  } catch {
     // 静默处理错误，返回登录失败响应
     return new Response(null, {
       status: 302,
       headers: {
-        Location: `/login?error=${encodeURIComponent('登录失败，请重试')}`
-      }
+        Location: `/login?error=${encodeURIComponent("登录失败，请重试")}`,
+      },
     });
   }
 }

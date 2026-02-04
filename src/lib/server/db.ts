@@ -10,7 +10,10 @@ const dbPath = join(process.cwd(), "sqlite.db");
 const sqlite = sqlite3(dbPath, { fileMustExist: false });
 
 // 初始化数据库表
-const schema = readFileSync(join(process.cwd(), "src/lib/server/schema.sql"), "utf-8");
+const schema = readFileSync(
+  join(process.cwd(), "src/lib/server/schema.sql"),
+  "utf-8",
+);
 schema.split(";").forEach((statement) => {
   const trimmed = statement.trim();
   if (trimmed) {
@@ -29,7 +32,7 @@ const adapter: SyncAdapter<sqlite3.RunResult> = {
   execute: (statement: string, params: unknown[]): sqlite3.RunResult => {
     const result = sqlite.prepare(statement).run(...params);
     return result;
-  }
+  },
 };
 
 export const db = new SyncDatabase(adapter);

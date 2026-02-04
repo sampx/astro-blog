@@ -7,7 +7,6 @@ import AuthButtonsClient from "~/components/auth/AuthButtonsClient";
 
 import { getHomePermalink } from "~/utils/permalinks";
 import { trimSlash, getAsset } from "~/utils/permalinks";
-import type { CallToAction } from "~/types";
 
 interface Link {
   text?: string;
@@ -23,6 +22,7 @@ interface MenuLink extends Link {
 export interface Props {
   id?: string;
   links?: Array<MenuLink>;
+  actions?: Array<unknown>;
   isSticky?: boolean;
   isDark?: boolean;
   isFullWidth?: boolean;

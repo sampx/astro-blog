@@ -9,10 +9,10 @@ export function GET(context: APIContext): Response {
   const state = generateState();
   const redirect = context.url.searchParams.get("redirect");
   const url = github.createAuthorizationURL(state, ["user:email"]);
-  
+
   // 添加 prompt=consent 参数以强制显示 GitHub 授权页面
   const finalUrl = new URL(url.toString());
-  finalUrl.searchParams.set('prompt', 'consent');
+  finalUrl.searchParams.set("prompt", "consent");
 
   // 保存重定向 URL 到 cookie
   if (redirect) {
@@ -21,7 +21,7 @@ export function GET(context: APIContext): Response {
       maxAge: 60 * 10,
       secure: import.meta.env.PROD,
       path: "/",
-      sameSite: "lax"
+      sameSite: "lax",
     });
   }
 
@@ -30,7 +30,7 @@ export function GET(context: APIContext): Response {
     maxAge: 60 * 10,
     secure: import.meta.env.PROD,
     path: "/",
-    sameSite: "lax"
+    sameSite: "lax",
   });
 
   return context.redirect(finalUrl.toString());

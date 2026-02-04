@@ -84,7 +84,7 @@ export const adaptOpenGraphImages = async (
           };
         }
 
-        let _image;
+        let _image: { src: string; width: number; height: number } | undefined;
 
         if (
           typeof resolvedImage === "string" &&
@@ -92,30 +92,38 @@ export const adaptOpenGraphImages = async (
             resolvedImage.startsWith("https://")) &&
           isUnpicCompatible(resolvedImage)
         ) {
-          _image = (
-            await unpicOptimizer(
-              resolvedImage,
-              [defaultWidth],
-              defaultWidth,
-              defaultHeight,
-              "jpg",
-            )
-          )[0];
+          _image = {
+            src: (
+              await unpicOptimizer(
+                resolvedImage,
+                [defaultWidth],
+                defaultWidth,
+                defaultHeight,
+                "jpg",
+              )
+            )[0].src,
+            width: defaultWidth,
+            height: defaultHeight,
+          };
         } else if (resolvedImage) {
           const dimensions =
             typeof resolvedImage !== "string" &&
             resolvedImage?.width <= defaultWidth
               ? [resolvedImage?.width, resolvedImage?.height]
               : [defaultWidth, defaultHeight];
-          _image = (
-            await astroAsseetsOptimizer(
-              resolvedImage,
-              [dimensions[0]],
-              dimensions[0],
-              dimensions[1],
-              "jpg",
-            )
-          )[0];
+          _image = {
+            src: (
+              await astroAsseetsOptimizer(
+                resolvedImage,
+                [dimensions[0]],
+                dimensions[0],
+                dimensions[1],
+                "jpg",
+              )
+            )[0].src,
+            width: dimensions[0],
+            height: dimensions[1],
+          };
         }
 
         if (typeof _image === "object") {

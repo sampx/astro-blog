@@ -1,5 +1,4 @@
 ---
-import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 import merge from 'lodash.merge';
 import type { ImageMetadata } from 'astro';
 import Layout from '~/layouts/PageLayout.astro';
@@ -9,7 +8,7 @@ import RelatedPosts from '~/components/blog/RelatedPosts.astro';
 import Sidebar from '~/components/blog/Sidebar.astro';
 
 import { getCanonical, getPermalink } from '~/utils/permalinks';
-import { getStaticPathsBlogPost, blogPostRobots, findPostsByPermalink, fetchPosts } from '~/utils/blog';
+import { findPostsByPermalink } from '~/utils/blog';
 import { findImage } from '~/utils/images';
 import type { MetaData } from '~/types';
 
@@ -22,9 +21,6 @@ const blogPath = Astro.params.blog;
 if (!blogPath) {
   return Astro.redirect('/404', 404);
 }
-
-// 获取所有文章
-const allPosts = await fetchPosts();
 
 // 根据permalink查找文章
 const posts = await findPostsByPermalink([blogPath]);
@@ -148,7 +144,7 @@ if (post.protected) {
   }
 }
 
-const url = getCanonical(getPermalink(post.permalink, 'post'));
+const url = String(getCanonical(getPermalink(post.permalink, 'post')));
 const image = (await findImage(post.image)) as ImageMetadata | string | undefined;
 
 const metadata = merge(
@@ -179,14 +175,12 @@ const metadata = merge(
       
       <main class="md:col-span-9">
         <article class="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900/70 backdrop-blur">
-          <SinglePost post={post} />
+          <SinglePost post={post} url={url} />
         </article>
         
-        {post.relatedPosts?.length > 0 && (
-          <div class="mt-8 rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900/70 backdrop-blur">
-            <RelatedPosts posts={post.relatedPosts} />
-          </div>
-        )}
+        <div class="mt-8 rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900/70 backdrop-blur">
+          <RelatedPosts post={post} />
+        </div>
         
         <div class="mt-8">
           <ToBlogLink />

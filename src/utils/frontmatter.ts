@@ -1,24 +1,24 @@
 import getReadingTime from "reading-time";
 import { toString } from "mdast-util-to-string";
 import { visit } from "unist-util-visit";
-import type {
-  MarkdownAstroData,
-  RehypePlugin,
-  RemarkPlugin,
-} from "@astrojs/markdown-remark";
+import type { RemarkPlugin, RehypePlugin } from "@astrojs/markdown-remark";
+import type { Node } from "unist";
 
 export const readingTimeRemarkPlugin: RemarkPlugin = () => {
-  return function (tree, file) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return function (tree: Node, file: any) {
     const textOnPage = toString(tree);
     const readingTime = Math.ceil(getReadingTime(textOnPage).minutes);
 
-    (file.data.astro as MarkdownAstroData).frontmatter.readingTime =
-      readingTime;
+    if (file.data.astro) {
+      file.data.astro.frontmatter.readingTime = readingTime;
+    }
   };
 };
 
 export const responsiveTablesRehypePlugin: RehypePlugin = () => {
-  return function (tree) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return function (tree: any) {
     if (!tree.children) return;
 
     for (let i = 0; i < tree.children.length; i++) {
@@ -41,11 +41,13 @@ export const responsiveTablesRehypePlugin: RehypePlugin = () => {
 };
 
 export const lazyImagesRehypePlugin: RehypePlugin = () => {
-  return function (tree) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return function (tree: any) {
     if (!tree.children) return;
 
-    visit(tree, "element", function (node) {
-      if (node.tagName === "img") {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    visit(tree, "element", function (node: any) {
+      if (node.tagName === "img" && node.properties) {
         node.properties.loading = "lazy";
       }
     });

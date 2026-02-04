@@ -24,7 +24,6 @@
     ```
 
     访问 `http://localhost:4321` 查看效果。
-    访问 `http://localhost:4321/tutorials` 查看教程列表。
 
 ## 管理内容
 
@@ -47,17 +46,6 @@ tags:
 ---
 
 这里是文章正文...
-```
-
-**创建受保护文章：**
-如果您希望文章仅对登录用户可见，请添加 `protected: true`：
-
-```yaml
----
-title: "私密日记"
-protected: true
-# ...其他字段
----
 ```
 
 ### 添加新教程
@@ -102,11 +90,13 @@ pnpm build
 本项目集成了 GitHub OAuth 登录功能，用于解锁受保护的内容。
 
 ### 1. 认证机制
+
 - **GitHub OAuth**: 使用 `src/lib/server/oauth.ts` 处理 GitHub 回调。
 - **Session 管理**: 基于 SQLite 数据库存储会话，使用 `src/middleware.ts` 拦截所有请求验证 Cookie。
 - **用户信息**: 登录用户数据存储在 `user` 表中，每次请求通过 `Astro.locals.user` 访问。
 
 ### 2. 内容保护
+
 博客文章支持“受保护”模式，只有登录用户才能阅读全文。
 
 **如何设置：**
@@ -120,5 +110,6 @@ protected: true
 ```
 
 **工作原理：**
+
 - 未登录用户只能看到文章标题和摘要，正文会被模糊处理或隐藏，并显示“请登录后阅读”的提示。
 - 使用 `ProtectedContent` 组件动态判断用户状态并渲染内容。

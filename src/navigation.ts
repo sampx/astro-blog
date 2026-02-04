@@ -9,11 +9,15 @@ export const headerData = {
     {
       text: "Blog",
       href: getBlogPermalink(),
-    },    
+    },
+    {
+      text: "Tutorials",
+      href: "/tutorials",
+    },
   ],
 };
 
-export const footerData = {  
+export const footerData = {
   // secondaryLinks: [
   //   { text: "Terms", href: getPermalink("/terms") },
   //   { text: "Privacy Policy", href: getPermalink("/privacy") },

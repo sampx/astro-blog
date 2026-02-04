@@ -46,28 +46,30 @@ const metadataDefinition = () =>
     .optional();
 
 const postCollection = defineCollection({
-  schema: z.object({
-    publishDate: z.date().optional(),
-    updateDate: z.date().optional(),
-    title: z.string(),
-    excerpt: z.string().optional(),
-    image: z.string().optional(),
-    category: z.string().optional(),
-    tags: z.array(z.string()).optional(),
-    author: z.string().optional(),
-    draft: z.boolean().optional(),
-    protected: z.boolean().optional(),
-    metadata: metadataDefinition(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      publishDate: z.date().optional(),
+      updateDate: z.date().optional(),
+      title: z.string(),
+      excerpt: z.string().optional(),
+      image: z.union([image(), z.string()]).optional(),
+      category: z.string().optional(),
+      tags: z.array(z.string()).optional(),
+      author: z.string().optional(),
+      draft: z.boolean().optional(),
+      protected: z.boolean().optional(),
+      metadata: metadataDefinition(),
+    }),
 });
 
 const productsCollection = defineCollection({
-  schema: z.object({
-    title: z.string(),
-    price: z.number(),
-    description: z.string().optional(),
-    image: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      price: z.number(),
+      description: z.string().optional(),
+      image: image().optional(),
+    }),
 });
 
 export const collections = {

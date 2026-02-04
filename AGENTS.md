@@ -164,3 +164,20 @@ const { prop1 = 'default', prop2 } = Astro.props;
 - Validate user input on server side
 - Session cookies: httpOnly, secure in production, sameSite: lax
 - Check authentication status before protected actions
+
+### Content Protection Strategy
+
+- **Protected Posts**:
+  - Add `protected: true` to frontmatter.
+  - Logic is handled in `src/components/blog/SinglePost.astro`.
+  - Use `ProtectedContent` component to conditionally render body.
+  - Unauthenticated users see a lock icon and login prompt.
+
+### Authentication Implementation
+
+- **Provider**: GitHub OAuth (`src/pages/login/github/index.ts`).
+- **Storage**: SQLite `session` and `user` tables.
+- **Middleware**: `src/middleware.ts` runs on every request:
+  - Validates `session` cookie.
+  - Populates `Astro.locals.user` & `Astro.locals.session`.
+  - Handles session expiration and renewal automatically.

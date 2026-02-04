@@ -12,51 +12,67 @@ const products = await getCollection("products");
 ---
 
 <Layout metadata={metadata}>
-    <HeroText
-        tagline="Tutorials"
-        title="我的教程"
-        subtitle="分享我的编程经验和技术心得，助你快速成长。"
-    />
+    <section class="px-4 py-8 mx-auto max-w-7xl lg:py-12 md:px-6">
+        <div class="mb-10 md:mb-16">
+            <h1
+                class="mb-4 text-4xl font-bold tracking-tight lg:text-5xl font-heading dark:text-white"
+            >
+                Detailed Tutorials
+            </h1>
+            <p class="max-w-2xl text-lg text-muted dark:text-slate-400">
+                Step-by-step guides and premium courses to master modern web
+                development.
+            </p>
+        </div>
 
-    <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 lg:py-20">
-        <div class="grid gap-6 row-gap-5 md:grid-cols-2 lg:grid-cols-4 -mb-6">
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {
                 products.map((product) => (
-                    <div class="mb-6 transition hover:-translate-y-1 hover:shadow-lg duration-300">
-                        <a
-                            href={`/tutorials/${product.slug}`}
-                            class="block h-full flex flex-col bg-white dark:bg-slate-900 rounded-lg shadow border border-gray-200 dark:border-gray-700"
-                        >
-                            <div class="relative overflow-hidden bg-gray-400 dark:bg-slate-700 rounded-t-lg aspect-[16/9]">
-                                {product.data.image && (
-                                    <Image
-                                        src={product.data.image}
-                                        class="object-cover w-full h-full"
-                                        widths={[400, 768]}
-                                        alt={product.data.title}
-                                    />
-                                )}
+                    <a
+                        href={`/tutorials/${product.slug}`}
+                        class="group flex flex-col h-full bg-white dark:bg-slate-900 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-800 overflow-hidden"
+                    >
+                        <div class="relative aspect-video overflow-hidden">
+                            {product.data.image && (
+                                <Image
+                                    src={product.data.image}
+                                    class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                                    widths={[400, 768]}
+                                    alt={product.data.title}
+                                />
+                            )}
+                            <div class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold shadow-sm border border-slate-200 dark:border-slate-700 text-primary">
+                                ¥{product.data.price}
                             </div>
-                            <div class="p-6 flex flex-col flex-1">
-                                <h3 class="mb-2 text-xl font-bold leading-tight sm:text-2xl font-heading">
-                                    {product.data.title}
-                                </h3>
-                                {product.data.description && (
-                                    <p class="text-muted dark:text-slate-400 text-md flex-1">
-                                        {product.data.description}
-                                    </p>
-                                )}
-                                <div class="mt-4 flex items-center justify-between">
-                                    <span class="text-2xl font-bold text-primary">
-                                        ¥{product.data.price}
-                                    </span>
-                                    <span class="text-blue-600 hover:underline">
-                                        查看详情 &rarr;
-                                    </span>
-                                </div>
+                        </div>
+
+                        <div class="flex flex-col flex-1 p-6">
+                            <h3 class="mb-3 text-xl font-bold font-heading leading-tight group-hover:text-primary transition-colors">
+                                {product.data.title}
+                            </h3>
+
+                            {product.data.description && (
+                                <p class="text-muted dark:text-slate-400 text-sm line-clamp-3 mb-4 flex-1">
+                                    {product.data.description}
+                                </p>
+                            )}
+
+                            <div class="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800 flex items-center text-primary font-medium text-sm group-hover:translate-x-1 transition-transform">
+                                View Details
+                                <svg
+                                    class="w-4 h-4 ml-1"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 ))
             }
         </div>
